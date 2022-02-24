@@ -1,0 +1,102 @@
+-------------------------------------------------------------------
+<html>
+<body>
+<form action="add">
+<input type="text" name ="t1">
+<input type="text" name="t2">
+<input type="submit">
+
+</form>
+</body>
+</html>
+
+------------------------------------------------------------
+package deemo_maven;
+
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+public class mywebinitilizer extends AbstractAnnotationConfigDispatcherServletInitializer {
+
+	@Override
+	protected Class<?>[] getRootConfigClasses() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Class<?>[] getServletConfigClasses() {
+		// TODO Auto-generated method stub
+		return new Class[] {teluskoconfig.class};
+	}
+
+	@Override
+	protected String[] getServletMappings() {
+		// TODO Auto-generated method stub
+		return new String[]{"/"};
+	}
+
+}
+---------------------------------------------------------------------------
+package deemo_maven;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ComponentScan({"deemo_maven"})
+public class teluskoconfig {
+
+}
+------------------------------------------------------------------------
+package deemo_maven;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.tesusko.service.addservice;
+
+@Controller
+public class addcontroller {
+
+	@RequestMapping("/add")
+	public ModelAndView add(HttpServletRequest request ,HttpServletResponse response) {
+
+		int i =Integer.parseInt(request.getParameter("t1"));
+		int j =Integer.parseInt(request.getParameter("t2"));
+
+		addservice ad =new addservice();
+	     int k=  ad.add(i, j);
+		ModelAndView mv =new ModelAndView();
+		mv.setViewName("display.jsp");
+	    mv.addObject("res",k);
+		return mv;
+	}
+}
+------------------------------------------------------------------------------------------
+package com.tesusko.service;
+
+public class addservice {
+
+	public int add(int i,int j) {
+		return i+j;
+	}
+}
+-------------------------------------------------------------------------------------
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" isELIgnored="false"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>	
+</head>
+<body>
+Result :
+ ${res }
+</body>
+</html>
+---------------------------------------------------------------------------------------------
